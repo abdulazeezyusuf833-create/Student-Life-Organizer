@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>CampusPilot – Student Life Organiser</title>
+<style>
+:root{--bg:#eef2f5;--card:#fff;--tx:#14213d;--mu:#5f6b85;--bd:#dce3ea;--pr:#0f766e;--pr-t:#d5f0ec;--hl:#ffd23f;--ink:#14213d;--ok:#15803d;--wa:#b45309;--er:#c2323a;--r:14px;--sh:0 2px 10px rgba(20,33,61,.07)}
+[data-theme=dark]{--bg:#0c1322;--card:#141d33;--tx:#e9eef9;--mu:#92a0c0;--bd:#24304d;--pr:#2dd4bf;--pr-t:#12363a;--ink:#070c18;--ok:#4ade80;--wa:#fbbf24;--er:#f87171;--sh:none}
+*{box-sizing:border-box;margin:0}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.2}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--pr);outline-offset:2px}
+.app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+aside{background:var(--ink);color:#e9eef9;padding:22px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:6px}
+.logo{font:700 21px Georgia,serif;padding:0 10px 18px}.logo b{background:var(--hl);color:#14213d;padding:0 6px;border-radius:4px}
+nav{display:flex;flex-direction:column;gap:4px}
+nav button{background:none;border:0;color:#b8c3dd;text-align:left;padding:10px 12px;border-radius:10px;cursor:pointer;display:flex;gap:10px;align-items:center}
+nav button:hover{background:rgba(255,255,255,.08)}
+nav button.on{background:var(--hl);color:#14213d;font-weight:600}
+nav i{font-style:normal;width:22px;text-align:center}
+.side-foot{margin-top:auto;display:flex;flex-direction:column;gap:8px}
+.ghost{background:rgba(255,255,255,.1);border:0;color:#e9eef9;padding:9px 12px;border-radius:10px;cursor:pointer}
+main{padding:28px clamp(16px,4vw,44px) 40px;max-width:1100px;width:100%}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:22px;flex-wrap:wrap}
+.top h1{font-size:clamp(24px,4vw,34px)}.top p{color:var(--mu)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:18px;box-shadow:var(--sh)}
+.card h3{font-size:18px;margin-bottom:12px}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.stats{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:16px}
+.stat{padding:14px 16px}.stat b{display:block;font:700 28px Georgia,serif}.stat span{color:var(--mu);font-size:13px}
+.hero{background:var(--ink);color:#f2f5fb;border-radius:18px;padding:clamp(20px,4vw,32px);margin-bottom:16px}
+.hero small{color:#a9b6d3}
+.hero h2{font-size:clamp(22px,4vw,34px);margin:8px 0}
+.hero h2 mark{background:linear-gradient(transparent 55%,var(--hl) 55%);color:inherit;padding:0 2px}
+.hero p{color:#c9d3ea}
+.row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--bd)}
+.row:last-child{border:0}.row .g{flex:1;min-width:0}
+.row .t{font-weight:600;overflow-wrap:anywhere}.row .s{color:var(--mu);font-size:13px}
+.done .t{text-decoration:line-through;color:var(--mu)}
+.tag{font-size:12px;font-weight:600;padding:3px 9px;border-radius:99px;background:var(--pr-t);color:var(--pr);white-space:nowrap}
+.tag.er{background:rgba(194,50,58,.12);color:var(--er)}.tag.wa{background:rgba(180,83,9,.13);color:var(--wa)}.tag.ok{background:rgba(21,128,61,.13);color:var(--ok)}
+form.add{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:16px;align-items:end}
+label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--mu)}
+input,select{background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:10px 12px;width:100%;color:var(--tx)}
+.btn{background:var(--pr);color:#fff;border:0;border-radius:10px;padding:11px 16px;font-weight:600;cursor:pointer}
+[data-theme=dark] .btn{color:#06201d}
+.btn.sm{padding:6px 10px;font-size:13px}.btn.o{background:none;color:var(--pr);border:1px solid var(--pr)}
+.x{background:none;border:0;color:var(--mu);cursor:pointer;font-size:18px;padding:4px 8px;border-radius:8px}.x:hover{color:var(--er)}
+.chk{width:22px;height:22px;accent-color:var(--pr);flex:none;cursor:pointer}
+.tt{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.day{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:12px;min-height:90px}
+.day.now{border:2px solid var(--pr)}.day h4{font:600 15px Georgia,serif;margin-bottom:8px}
+.lec{background:var(--pr-t);border-left:4px solid var(--pr);border-radius:8px;padding:8px 10px;margin-bottom:8px;font-size:13px;position:relative}
+.lec b{display:block;padding-right:18px}.lec .x{position:absolute;top:2px;right:0;font-size:15px}
+.cd{display:flex;gap:8px;margin-top:10px}.cd div{background:var(--bg);border-radius:10px;padding:8px 4px;text-align:center;flex:1}
+.cd b{display:block;font:700 22px Georgia,serif}.cd span{font-size:11px;color:var(--mu)}
+.ring{width:150px;height:150px;border-radius:50%;display:grid;place-items:center;margin:auto;background:conic-gradient(var(--pr) calc(var(--p)*1%),var(--bd) 0)}
+.ring div{width:112px;height:112px;border-radius:50%;background:var(--card);display:grid;place-items:center;font:700 30px Georgia,serif}
+.bar{height:10px;background:var(--bd);border-radius:9px;overflow:hidden;margin:6px 0 14px}.bar i{display:block;height:100%;background:var(--pr);border-radius:9px;transition:width .4s}
+.big{font:700 44px Georgia,serif}
+.empty{color:var(--mu);text-align:center;padding:22px 8px}
+.cg{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:8px;margin-bottom:8px}
+.res{background:var(--ink);color:#fff;border-radius:var(--r);padding:20px;text-align:center}
+.res .big mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit}
+.bn{display:none}
+@media(max-width:860px){
+ .app{display:block}
+ aside{display:none}
+ .bn{display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--ink);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));z-index:9;justify-content:space-around}
+ .bn button{background:none;border:0;color:#b8c3dd;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:5px 4px;border-radius:9px;flex:1;cursor:pointer}
+ .bn button i{font-style:normal;font-size:18px}.bn button.on{background:var(--hl);color:#14213d;font-weight:700}
+ main{padding-bottom:96px;padding-top:calc(20px + env(safe-area-inset-top,0px))}
+ .cg{grid-template-columns:1fr 1fr 1fr auto}.cg>:first-child{grid-column:1/-1}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+ <aside><div class="logo">Campus<b>Pilot</b></div><nav id="nav"></nav>
+  <div class="side-foot"><button class="ghost" id="theme">🌙 Dark mode</button><button class="ghost" id="reset">Reset all data</button></div></aside>
+ <main><div id="view"></div></main>
+</div>
+<div class="bn" id="bn"></div>
+<script>
+const $=s=>document.querySelector(s),K='campuspilot.v1';
+let S={lec:[],dl:[],ex:[],tk:[],gr:[{c:'',u:3,g:'A'}],scale:5,pc:'',pu:'',theme:'',name:''},view='dash';
+try{Object.assign(S,JSON.parse(localStorage.getItem(K)||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}};
+const uid=()=>Math.random().toString(36).slice(2,9);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const iso=d=>new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,10);
+const dIn=d=>Math.round((new Date(d+'T00:00')-new Date(iso(new Date())+'T00:00'))/864e5);
+const DAYS=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+const tIdx=()=>(new Date().getDay()+6)%7;
+const rel=n=>n<0?`${-n} day${n<-1?'s':''} overdue`:n===0?'Due today':n===1?'Due tomorrow':`Due in ${n} days`;
+const fmt=d=>new Date(d+'T00:00').toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short'});
+const NAV=[['dash','🏠','Today'],['time','🗓️','Timetable'],['dead','📌','Deadlines'],['exam','⏳','Exams'],['plan','✅','Planner'],['cgpa','🎓','CGPA'],['prog','📈','Progress']];
+const SC={5:{A:5,B:4,C:3,D:2,E:1,F:0},4:{A:4,B:3,C:2,D:1,F:0}};
+
+function focus(){
+ const L=[],now=new Date();
+ S.dl.filter(x=>!x.done).forEach(x=>{const n=dIn(x.date);L.push({s:n<0?100:n==0?92:n<=2?80:n<=7?50:20,t:`${x.type}: ${x.title}`,sub:`${x.c?x.c+' · ':''}${rel(n)}`,tag:n<0?'er':n<=2?'wa':'',lab:n<0?'Overdue':n<=2?'Urgent':'Upcoming'})});
+ S.ex.forEach(x=>{const n=dIn(x.date.slice(0,10));if(n<0)return;L.push({s:n<=3?95:n<=7?85:n<=30?45:15,t:`Revise for ${x.c}`,sub:`Exam ${n===0?'is today':n===1?'is tomorrow':'in '+n+' days'}`,tag:n<=7?'er':n<=30?'wa':'',lab:'Exam'})});
+ S.tk.filter(x=>!x.done).forEach(x=>{const n=x.date?dIn(x.date):99;L.push({s:n<=0?88:x.pri==='High'?58:x.pri==='Medium'?35:25,t:x.t,sub:`Study task${x.date?' · '+rel(n).replace('Due','due'):''}`,tag:n<0?'er':n===0?'wa':'',lab:n<0?'Overdue':n===0?'Today':x.pri})});
+ const nl=S.lec.filter(l=>+l.day===tIdx()&&new Date(iso(now)+'T'+l.e)>now).sort((a,b)=>a.s.localeCompare(b.s))[0];
+ if(nl)L.push({s:66,t:`Attend ${nl.c}`,sub:`Today ${nl.s}–${nl.e}${nl.v?' · '+nl.v:''}`,tag:'',lab:'Class'});
+ return L.sort((a,b)=>b.s-a.s);
+}
+const pct=()=>{const t=S.tk.length+S.dl.length,d=S.tk.filter(x=>x.done).length+S.dl.filter(x=>x.done).length;return{t,d,p:t?Math.round(d/t*100):0}};
+const row=(k,x,t,s,tag)=>`<div class="row ${x.done?'done':''}"><input class="chk" type="checkbox" aria-label="Mark done" ${x.done?'checked':''} data-act="tog" data-k="${k}" data-id="${x.id}"><div class="g"><div class="t">${esc(t)}</div><div class="s">${esc(s)}</div></div>${tag||''}<button class="x" aria-label="Delete" data-act="del" data-k="${k}" data-id="${x.id}">×</button></div>`;
+const empty=m=>`<div class="empty">${m}</div>`;
+
+const V={};
+V.dash=()=>{
+ const f=focus(),top=f[0],h=new Date().getHours(),p=pct(),now=new Date();
+ const tl=S.lec.filter(l=>+l.day===tIdx()).sort((a,b)=>a.s.localeCompare(b.s));
+ const nx=S.ex.filter(e=>new Date(e.date)>now).sort((a,b)=>a.date.localeCompare(b.date))[0];
+ const pend=S.dl.filter(d=>!d.done).length,blank=!S.lec.length&&!S.dl.length&&!S.ex.length&&!S.tk.length;
+ return `<div class="top"><div><h1>Good ${h<12?'morning':h<17?'afternoon':'evening'}${S.name?', '+esc(S.name):''} 👋</h1><p>${new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'})} · <a href="#" data-act="name" style="color:var(--pr)">${S.name?'Change name':'Add your name'}</a></p></div></div>
+ <section class="hero"><small>What to focus on today</small>
+ <h2>${top?`<mark>${esc(top.t)}</mark>`:'You’re all caught up'}</h2>
+ <p>${top?esc(top.sub)+(f.length>1?` · plus ${f.length-1} more on your list`:''):'Add a deadline, exam or study task and your plan will appear here.'}</p>
+ ${blank?`<p style="margin-top:14px"><button class="btn" data-act="demo">Load sample data</button></p>`:''}</section>
+ <div class="grid stats"><div class="card stat"><b>${tl.length}</b><span>Classes today</span></div><div class="card stat"><b>${pend}</b><span>Pending deadlines</span></div><div class="card stat"><b>${nx?Math.max(0,dIn(nx.date.slice(0,10)))+'d':'–'}</b><span>${nx?'Until '+esc(nx.c):'No upcoming exam'}</span></div><div class="card stat"><b>${p.p}%</b><span>Tasks completed</span></div></div>
+ <div class="grid g2"><div class="card"><h3>Your focus list</h3>${f.length?f.slice(0,6).map((x,i)=>`<div class="row"><div class="g"><div class="t">${i+1}. ${esc(x.t)}</div><div class="s">${esc(x.sub)}</div></div><span class="tag ${x.tag}">${esc(x.lab)}</span></div>`).join(''):empty('Nothing urgent. Enjoy the calm or plan ahead.')}</div>
+ <div class="card"><h3>Today’s classes</h3>${tl.length?tl.map(l=>`<div class="row"><div class="g"><div class="t">${esc(l.c)}</div><div class="s">${esc(l.v||'No venue')}</div></div><span class="tag">${l.s}–${l.e}</span></div>`).join(''):empty('No lectures today.')}</div></div>`;
+};
+V.time=()=>`<div class="top"><div><h1>Weekly timetable</h1><p>Your lectures, laid out by day.</p></div></div>
+<div class="card" style="margin-bottom:16px"><form class="add" data-add="lec"><label>Course<input name="c" required placeholder="e.g. MTH 201"></label><label>Day<select name="day">${DAYS.map((d,i)=>`<option value="${i}" ${i===tIdx()?'selected':''}>${d}</option>`).join('')}</select></label><label>Starts<input type="time" name="s" required value="08:00"></label><label>Ends<input type="time" name="e" required value="10:00"></label><label>Venue<input name="v" placeholder="Optional"></label><button class="btn">Add lecture</button></form></div>
+<div class="grid tt">${DAYS.map((d,i)=>`<div class="day ${i===tIdx()?'now':''}"><h4>${d}${i===tIdx()?' · today':''}</h4>${S.lec.filter(l=>+l.day===i).sort((a,b)=>a.s.localeCompare(b.s)).map(l=>`<div class="lec"><b>${esc(l.c)}</b>${l.s}–${l.e}${l.v?'<br>'+esc(l.v):''}<button class="x" aria-label="Delete lecture" data-act="del" data-k="lec" data-id="${l.id}">×</button></div>`).join('')||'<span class="s" style="color:var(--mu);font-size:13px">Free day</span>'}</div>`).join('')}</div>`;
+V.dead=()=>{const a=[...S.dl].sort((x,y)=>x.done-y.done||x.date.localeCompare(y.date));
+ return `<div class="top"><div><h1>Assignments & tests</h1><p>Never miss a deadline again.</p></div></div>
+<div class="card" style="margin-bottom:16px"><form class="add" data-add="dl"><label>Title<input name="title" required placeholder="e.g. Lab report 3"></label><label>Course<input name="c" placeholder="e.g. PHY 101"></label><label>Type<select name="type"><option>Assignment</option><option>Test</option><option>Quiz</option><option>Project</option></select></label><label>Due date<input type="date" name="date" required value="${iso(new Date())}"></label><button class="btn">Add deadline</button></form></div>
+<div class="card">${a.length?a.map(x=>{const n=dIn(x.date);return row('dl',x,x.title,`${x.type}${x.c?' · '+x.c:''} · ${fmt(x.date)}`,x.done?'<span class="tag ok">Done</span>':`<span class="tag ${n<0?'er':n<=2?'wa':''}">${rel(n)}</span>`)}).join(''):empty('No deadlines yet. Add your first one above.')}</div>`};
+V.exam=()=>{const a=[...S.ex].sort((x,y)=>x.date.localeCompare(y.date));
+ return `<div class="top"><div><h1>Exam countdown</h1><p>Know exactly how long you have left.</p></div></div>
+<div class="card" style="margin-bottom:16px"><form class="add" data-add="ex"><label>Course<input name="c" required placeholder="e.g. CSC 205"></label><label>Date & time<input type="datetime-local" name="date" required></label><label>Venue<input name="v" placeholder="Optional"></label><button class="btn">Add exam</button></form></div>
+<div class="grid g2">${a.map(x=>`<div class="card"><div style="display:flex;justify-content:space-between;gap:8px"><div><h3 style="margin:0">${esc(x.c)}</h3><div class="s" style="color:var(--mu)">${new Date(x.date).toLocaleString(undefined,{weekday:'short',day:'numeric',month:'short',hour:'numeric',minute:'2-digit'})}${x.v?' · '+esc(x.v):''}</div></div><button class="x" aria-label="Delete exam" data-act="del" data-k="ex" data-id="${x.id}">×</button></div><div class="cd" data-cd="${x.date}"></div></div>`).join('')||`<div class="card empty" style="grid-column:1/-1">No exams added. Your countdown starts when you add one.</div>`}</div>`};
+V.plan=()=>{const a=[...S.tk].sort((x,y)=>x.done-y.done||(x.date||'9').localeCompare(y.date||'9')),p=S.tk.length?Math.round(S.tk.filter(x=>x.done).length/S.tk.length*100):0;
+ return `<div class="top"><div><h1>Study planner</h1><p>Break your revision into small tasks.</p></div></div>
+<div class="card" style="margin-bottom:16px"><form class="add" data-add="tk"><label>Task<input name="t" required placeholder="e.g. Solve past questions, Ch. 4"></label><label>Target date<input type="date" name="date"></label><label>Priority<select name="pri"><option>High</option><option selected>Medium</option><option>Low</option></select></label><button class="btn">Add task</button></form></div>
+<div class="card"><div style="display:flex;justify-content:space-between"><b>${p}% complete</b><span style="color:var(--mu)">${S.tk.filter(x=>x.done).length}/${S.tk.length} tasks</span></div><div class="bar"><i style="width:${p}%"></i></div>${a.length?a.map(x=>row('tk',x,x.t,x.date?fmt(x.date):'No target date',`<span class="tag ${x.pri==='High'?'er':x.pri==='Medium'?'wa':''}">${x.pri}</span>`)).join(''):empty('Your checklist is empty. Add a task to begin.')}</div>`};
+V.cgpa=()=>`<div class="top"><div><h1>CGPA calculator</h1><p>Plan your grades before results come out.</p></div><label style="min-width:160px">Grading scale<select id="scale"><option value="5" ${S.scale==5?'selected':''}>5.0 scale</option><option value="4" ${S.scale==4?'selected':''}>4.0 scale</option></select></label></div>
+<div class="grid g2"><div class="card"><h3>This semester</h3>${S.gr.map((g,i)=>`<div class="cg"><input data-gi="${i}" data-f="c" value="${esc(g.c)}" placeholder="Course" aria-label="Course"><input type="number" min="1" max="10" data-gi="${i}" data-f="u" value="${g.u}" aria-label="Credit units"><select data-gi="${i}" data-f="g" aria-label="Grade">${Object.keys(SC[S.scale]).map(k=>`<option ${g.g===k?'selected':''}>${k}</option>`).join('')}</select><button class="x" aria-label="Remove course" data-act="rg" data-i="${i}">×</button></div>`).join('')}<button class="btn o sm" data-act="ag">+ Add course</button>
+<h3 style="margin-top:20px">Previous record (optional)</h3><div class="cg" style="grid-template-columns:1fr 1fr"><label>Previous CGPA<input type="number" step="0.01" id="pc" value="${esc(S.pc)}"></label><label>Units completed<input type="number" id="pu" value="${esc(S.pu)}"></label></div></div>
+<div class="res" id="res"></div></div>`;
+V.prog=()=>{const p=pct(),courses={};S.dl.forEach(d=>{const c=d.c||'General';(courses[c]=courses[c]||[0,0])[1]++;if(d.done)courses[c][0]++});
+ const b=(l,d,t)=>{const v=t?Math.round(d/t*100):0;return `<div style="display:flex;justify-content:space-between"><span>${esc(l)}</span><b>${d}/${t}</b></div><div class="bar"><i style="width:${v}%"></i></div>`};
+ return `<div class="top"><div><h1>Your progress</h1><p>See how much you’ve already conquered.</p></div></div>
+<div class="grid g2"><div class="card"><h3>Overall</h3><div class="ring" style="--p:${p.p}"><div>${p.p}%</div></div><p style="text-align:center;color:var(--mu);margin-top:12px">${p.d} of ${p.t} items completed</p></div>
+<div class="card"><h3>Breakdown</h3>${b('Study tasks',S.tk.filter(x=>x.done).length,S.tk.length)}${b('Assignments & tests',S.dl.filter(x=>x.done).length,S.dl.length)}${Object.keys(courses).length?'<h3 style="margin-top:6px">By course</h3>'+Object.entries(courses).map(([c,v])=>b(c,v[0],v[1])).join(''):''}</div></div>`};
+
+function calc(){
+ const m=SC[S.scale];let u=0,q=0;S.gr.forEach(g=>{const n=+g.u||0;u+=n;q+=n*m[g.g]});
+ const gpa=u?q/u:0,pu=+S.pu||0,pc=+S.pc||0,tot=u+pu,cg=tot?(q+pc*pu)/tot:0,show=pu>0&&pc>0?cg:gpa,s=S.scale;
+ const cls=s==5?(show>=4.5?'First Class':show>=3.5?'Second Class Upper':show>=2.4?'Second Class Lower':show>=1.5?'Third Class':'Pass'):(show>=3.5?'First Class':show>=3?'Second Class Upper':show>=2?'Second Class Lower':show>=1?'Third Class':'Pass');
+ $('#res').innerHTML=`<div style="color:#a9b6d3">${pu>0&&pc>0?'Cumulative GPA':'Semester GPA'}</div><div class="big"><mark>${show.toFixed(2)}</mark></div><div style="margin:6px 0 14px">${cls}</div><div style="color:#a9b6d3;font-size:14px">Semester GPA ${gpa.toFixed(2)} · ${u} units</div>`;
+}
+function tick(){document.querySelectorAll('[data-cd]').forEach(e=>{let d=new Date(e.dataset.cd)-new Date();if(d<=0){e.innerHTML='<span class="tag">Exam time reached</span>';return}
+ const v=[Math.floor(d/864e5),Math.floor(d/36e5)%24,Math.floor(d/6e4)%60,Math.floor(d/1e3)%60];
+ e.innerHTML=['Days','Hours','Mins','Secs'].map((l,i)=>`<div><b>${v[i]}</b><span>${l}</span></div>`).join('')})}
+
+function render(){
+ $('#view').innerHTML=V[view]();
+ const nv=NAV.map(([k,i,l])=>`<button class="${k===view?'on':''}" data-nav="${k}"><i>${i}</i>${l}</button>`).join('');
+ $('#nav').innerHTML=nv;$('#bn').innerHTML=nv;
+ if(view==='cgpa')calc();tick();
+}
+function applyTheme(){const d=S.theme==='dark';document.documentElement.dataset.theme=d?'dark':'light';$('#theme').textContent=d?'☀️ Light mode':'🌙 Dark mode'}
+function demo(){
+ const D=n=>iso(new Date(Date.now()+n*864e5)),t=tIdx(),dt=n=>D(n)+'T09:00';
+ S.lec=[{c:'MTH 201',day:t,s:'10:00',e:'12:00',v:'LT 1'},{c:'CSC 205',day:t,s:'14:00',e:'16:00',v:'Lab B'},{c:'PHY 101',day:(t+1)%7,s:'08:00',e:'10:00',v:'Hall 3'},{c:'GST 211',day:(t+2)%7,s:'12:00',e:'14:00',v:'Auditorium'}].map(x=>({id:uid(),...x}));
+ S.dl=[{title:'Calculus problem set',c:'MTH 201',type:'Assignment',date:D(1)},{title:'Algorithms mid-semester',c:'CSC 205',type:'Test',date:D(5)},{title:'Lab report 3',c:'PHY 101',type:'Assignment',date:D(-1)}].map(x=>({id:uid(),done:false,...x}));
+ S.ex=[{c:'MTH 201',date:dt(12),v:'Main Hall'},{c:'CSC 205',date:dt(20),v:'CBT Centre'}].map(x=>({id:uid(),...x}));
+ S.tk=[{t:'Solve 20 past questions in Calculus',date:D(0),pri:'High'},{t:'Summarise Chapter 4 notes',date:D(2),pri:'Medium'},{t:'Review lab manual',date:'',pri:'Low'}].map(x=>({id:uid(),done:false,...x}));
+ save();render();
+}
+document.addEventListener('click',e=>{
+ const n=e.target.closest('[data-nav]');if(n){view=n.dataset.nav;render();scrollTo(0,0);return}
+ const a=e.target.closest('[data-act]');if(!a)return;const d=a.dataset;
+ if(d.act==='tog'){const x=S[d.k].find(i=>i.id===d.id);x.done=!x.done}
+ else if(d.act==='del')S[d.k]=S[d.k].filter(i=>i.id!==d.id);
+ else if(d.act==='ag')S.gr.push({c:'',u:3,g:'A'});
+ else if(d.act==='rg'){S.gr.splice(+d.i,1);if(!S.gr.length)S.gr.push({c:'',u:3,g:'A'})}
+ else if(d.act==='demo'){e.preventDefault();demo();return}
+ else if(d.act==='name'){e.preventDefault();const v=prompt('What should we call you?',S.name);if(v!==null)S.name=v.trim().slice(0,24)}
+ save();render();
+});
+document.addEventListener('submit',e=>{
+ const f=e.target.closest('[data-add]');if(!f)return;e.preventDefault();
+ const o=Object.fromEntries(new FormData(f));
+ if(f.dataset.add==='lec'&&o.e<=o.s){alert('End time must be after the start time.');return}
+ S[f.dataset.add].push({id:uid(),done:false,...o});save();render();
+});
+document.addEventListener('input',e=>{
+ const t=e.target;
+ if(t.dataset.gi!==undefined){S.gr[+t.dataset.gi][t.dataset.f]=t.value;save();calc()}
+ else if(t.id==='pc'||t.id==='pu'){S[t.id]=t.value;save();calc()}
+});
+document.addEventListener('change',e=>{
+ if(e.target.id==='scale'){S.scale=+e.target.value;S.gr.forEach(g=>{if(!(g.g in SC[S.scale]))g.g='A'});save();render()}
+});
+$('#theme').onclick=()=>{S.theme=S.theme==='dark'?'light':'dark';save();applyTheme()};
+$('#reset').onclick=()=>{if(confirm('Delete all your data? This cannot be undone.')){try{localStorage.removeItem(K)}catch(e){}location.reload()}};
+if(!S.theme)S.theme=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+applyTheme();render();setInterval(tick,1000);
+</script>
+</body>
+</html>
